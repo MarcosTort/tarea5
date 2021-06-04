@@ -44,7 +44,9 @@ struct _rep_binario {
   El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
   elementos de 'a'.
  */
-TBinario avlABinario(TAvl a);
+TBinario avlABinario(TAvl a){
+  return NULL;
+}
 /*
   Devuelve un 'TBinario' vacío (sin elementos).
   El tiempo de ejecución es O(1).
@@ -283,7 +285,7 @@ TBinario buscarSubarbol(nat elem, TBinario b){//LISTO
   La altura de un árbol vacío es 0.
   El tiempo de ejecución es O(n), siendo 'n' la cantidad de elementos de 'b'.
  */
-nat max(nat a ,nat b){//LISTO
+static nat max(nat a ,nat b){//LISTO
 if(a > b) return a;
 else      return b;
 }

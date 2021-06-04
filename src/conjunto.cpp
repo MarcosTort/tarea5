@@ -2,13 +2,33 @@
   Devuelve un 'TConjunto' vacío (sin elementos).
   El tiempo de ejecución en el peor caso es O(1).
  */
-TConjunto crearConjunto();
+#include "../include/conjunto.h"
+#include "../include/utils.h"
+#include "../include/iterador.h"
+#include "../include/info.h"
+#include "../include/utils.h"
+#include "../include/cadena.h"
+#include "../include/binario.h"
+#include <assert.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <math.h>
+struct _rep_conjunto{
+  TBinario dato;
+};
+TConjunto crearConjunto(){
+  return NULL;
+}
 
 /*
   Devuelve un 'TConjunto' cuyo único elemento es 'elem'.
   El tiempo de ejecución en el peor caso es O(1).
  */
-TConjunto singleton(nat elem);
+TConjunto singleton(nat elem){
+  return NULL;
+}
+
 
 /*
   Devuelve un 'TConjunto' con los elementos que pertenecen a 'c1' o 'c2'.
@@ -16,7 +36,10 @@ TConjunto singleton(nat elem);
   El tiempo de ejecucion en el peor caso es O(n),
   siendo  'n' la cantidad de elementos del 'TConjunto' resultado.
  */
-TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2);
+TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
+  return NULL;
+}
+
 
 /*
   Devuelve un 'TConjunto' con los elementos de 'c1' que no pertenecen a 'c2'.
@@ -25,40 +48,58 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2);
   siendo 'n1' y 'n2' la cantidad de elementos de 'c1' y 'c2' respectivamente y
   'n' la del 'TConjunto' resultado.
  */
-TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2);
+TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
+  return NULL;
+}
+
 
 /*
   Devuelve 'true' si y solo si 'elem' es un elemento de 'c'.
   El tiempo de ejecución en el peor caso es O(log n), siendo 'n' la cantidad de
   elementos de 'c'.
  */
-bool perteneceAConjunto(nat elem, TConjunto c);
+bool perteneceAConjunto(nat elem, TConjunto c){
+  return true;
+}
+
 
 /*
   Devuelve 'true' si y solo si 'c' es vacío (no tiene elementos).
   El tiempo de ejecución en el peor caso es O(1).
  */
-bool estaVacioConjunto(TConjunto c);
+bool estaVacioConjunto(TConjunto c){
+  return true;
+}
+
 
 /*
   Devuelve la cantidad de elementos de 'c'.
   El tiempo de ejecución en el peor caso es O(1).
  */
-nat cardinalidad(TConjunto c);
+nat cardinalidad(TConjunto c){
+  return 0;
+}
+
 
 /*
   Devuelve el mínimo de 'c'.
   Precondición: ! estaVacioConjunto(c).
   El tiempo de ejecución en el peor caso es O(1).
  */
-nat minimo(TConjunto c);
+nat minimo(TConjunto c){
+  return 0;
+}
+
 
 /*
   Devuelve el máximo de 'c'.
   Precondición: ! estaVacioConjunto(c).
   El tiempo de ejecución en el peor caso es O(1).
  */
-nat maximo(TConjunto c);
+nat maximo(TConjunto c){
+  return 0;
+}
+
 
 /*
   Devuelve un 'TConjunto' con los 'n' elementos que están en en el rango
@@ -69,7 +110,10 @@ nat maximo(TConjunto c);
   (creciente y sin repetidos).
   El tiempo de ejecución en el peor caso es O(n).
  */
-TConjunto arregloAConjunto(ArregloNats elems, nat n);
+TConjunto arregloAConjunto(ArregloNats elems, nat n){
+  return NULL;
+}
+
 
 /*
   Devuelve un 'TIterador' de los elementos de 'c'.
@@ -79,11 +123,17 @@ TConjunto arregloAConjunto(ArregloNats elems, nat n);
   El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
   elementos de 'c'.
  */
-TIterador iteradorDeConjunto(TConjunto c);
+TIterador iteradorDeConjunto(TConjunto c){
+  return NULL;
+}
+
 
 /*
   Libera la memoria asignada a 'c'.
   El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
   elementos de 'c'.
  */
-void liberarConjunto(TConjunto c);
+void liberarConjunto(TConjunto c){
+  
+}
+

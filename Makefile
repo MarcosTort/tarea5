@@ -161,7 +161,7 @@ t-t-%:$(TESTDIR)/t-%.in $(TESTDIR)/t-%.out
 
 # Genera el entregable.
 ENTREGA=Entrega5.tar.gz
-CPPS_ENTREGA = cadena.cpp binario.cpp iterador.cpp pila.cpp colaBinarios.cpp avl.cpp conjunto.cpp  colCadenas.cpp usoTads.cpp
+CPPS_ENTREGA = cadena.cpp binario.cpp iterador.cpp pila.cpp colaBinarios.cpp avl.cpp conjunto.cpp colCadenas.cpp usoTads.cpp
 entrega:
 	@rm -f $(ENTREGA)
 	tar zcvf $(ENTREGA) -C src $(CPPS_ENTREGA)
@@ -172,7 +172,7 @@ entrega:
 
 # borra binarios
 clean_bin:
-	@rm -f $(EJECUTABLE) $(ODIR)/$(PRINCIPAL).o $(OS)
+	@rm -f $(EJECUTABLE) $(ODIR)/$(PRINCIPAL).o $(OS) $(LIB)
 
 # borra resultados de ejecución y comparación
 clean_test:
@@ -181,7 +181,6 @@ clean_test:
 # borra binarios, resultados de ejecución y comparación, y copias de respaldo
 clean:clean_test clean_bin
 	@rm -f *~ $(HDIR)/*~ $(CPPDIR)/*~ $(TESTDIR)/*~
-
 
 
 

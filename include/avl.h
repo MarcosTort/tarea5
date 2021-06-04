@@ -17,7 +17,8 @@
 // Se debe definir en avl.cpp.
 // struct _rep_avl;
 // Declaración del tipo 'TAvl'.
-typedef struct _rep_avl *TAvl;
+
+typedef struct _rep_avl * TAvl;
 
 /*
   Devuelve un 'TAvl' vacío (sin elementos).

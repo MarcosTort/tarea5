@@ -32,7 +32,9 @@
   siendo 'n1' y 'n2' la cantidad de elementos de 'c1' y 'c2' respectivamente y
   'n' la del 'TConjunto' resultado.
  */
-TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2);
+TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
+  return NULL;
+}
 
 nat cantidadEnIterador(TIterador it){
     //printf("%i", actualEnIterador(it));

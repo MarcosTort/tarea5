@@ -1,14 +1,36 @@
+
+#include "../include/avl.h"
+#include "../include/utils.h"
+#include "../include/iterador.h"
+#include "../include/info.h"
+#include "../include/binario.h"
+#include <assert.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdlib.h>
 /*
   Devuelve un 'TAvl' vacío (sin elementos).
   El tiempo de ejecución en el peor caso es O(1).
  */
-TAvl crearAvl();
+struct _rep_avl {
+  int dato ;
+  _rep_avl * izq , * der ;
+  int altura ;
+  int cantidad;
+};
+
+
+TAvl crearAvl(){
+  return NULL;
+}
 
 /*
   Devuelve 'true' si y solo si 'avl' es vacío (no tiene elementos).
   El tiempo de ejecución en el peor caso es O(1).
  */
-bool estaVacioAvl(TAvl avl);
+bool estaVacioAvl(TAvl avl){
+  return avl == NULL;
+}
 
 /*
   Inserta 'elem' en 'avl' respetando la propiedad de orden definida.
@@ -17,7 +39,67 @@ bool estaVacioAvl(TAvl avl);
   El tiempo de ejecución en el peor caso es O(log n), siendo 'n' la cantidad
   de elementos de 'avl'.
 */
-TAvl insertarEnAvl(nat elem, TAvl avl);
+static nat max(nat a ,nat b){//LISTO
+if(a > b) return a;
+else      return b;
+}
+void rotarDerecha( TAvl & z ) { // precond : z y z->izq != NULL
+TAvl y = z -> izq ;
+TAvl T3 = y -> der ;
+y-> der = z ;
+z-> izq = T3 ;
+z-> altura = max( alturaDeAvl (z-> izq ) , alturaDeAvl (z-> der ) ) + 1;
+y-> altura = max( alturaDeAvl (y-> izq ) , alturaDeAvl (y-> der ) ) + 1;
+z = y ;
+}
+void rotarIzquierda( TAvl & z ) { // precond : el z y z->der != ←-NULL
+TAvl y = z -> der ;
+TAvl T2 = y -> izq ;
+y -> izq = z ;
+z -> der = T2 ;
+z -> altura = max ( alturaDeAvl (z -> izq ) , alturaDeAvl (z -> der ) ) +1;
+y -> altura = max ( alturaDeAvl (y -> izq ) , alturaDeAvl (y -> der ) ) +1;
+z = y ;
+}
+TAvl insertarEnAvl(nat elem, TAvl avl){
+  if(estaVacioAvl(avl)){
+    avl = new _rep_avl;
+    avl->dato = elem;
+    avl->izq = avl->der = NULL;
+    avl->altura = 1;
+    avl->cantidad++;
+  }
+  else{
+    if ( elem < avl->dato){
+      avl = insertarEnAvl(elem, avl->izq);
+      avl->altura = max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(derAvl(avl)));
+      //factor de balance
+      int FB = alturaDeAvl(izqAvl(avl))  - alturaDeAvl( derAvl(avl ));
+      if(FB > 1){
+        if( alturaDeAvl(avl->izq->izq) > alturaDeAvl(avl->izq->der) )
+          rotarDerecha(avl);
+        else{
+          rotarIzquierda(avl->izq);
+          rotarDerecha(avl);
+        }
+      }
+    }
+    else{
+      avl = insertarEnAvl(elem, derAvl(avl));
+      avl->altura = max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(izqAvl(avl)));
+      int FB = alturaDeAvl(izqAvl(avl))  - alturaDeAvl( derAvl(avl ));
+      if(FB > 1){
+        if( alturaDeAvl(avl->der->der) > alturaDeAvl(avl->der->izq) )
+          rotarIzquierda(avl);
+        else{
+          rotarDerecha(avl->der);
+          rotarIzquierda(avl);
+        }
+      }
+    }
+  }
+  return avl;
+}
 
 /*
   Devuelve el subárbol cuya raíz es 'elem'.
@@ -26,14 +108,30 @@ TAvl insertarEnAvl(nat elem, TAvl avl);
   El tiempo de ejecución en el peor caso es O(log n), siendo 'n' la cantidad
   de elementos de 'avl'.
  */
-TAvl buscarEnAvl(nat elem, TAvl avl);
+TAvl buscarEnAvl(nat elem, TAvl avl){
+  if(!estaVacioAvl(avl)){
+    if(elem == avl->dato){
+      return avl;
+    }
+    else if(elem<avl->dato){
+      return buscarEnAvl(elem, izqAvl(avl));
+    }
+    else if(elem>avl->dato){
+      return buscarEnAvl(elem, derAvl(avl));
+    }
+    else return NULL;
+  }
+  else return NULL;
+}
 
 /*
   Devuelve el elemento asociado a la raíz de 'avl'.
   Precondición: ! esVacioAvl(b).
   El tiempo de ejecución en el peor caso es O(1).
  */
-nat raizAvl(TAvl avl);
+nat raizAvl(TAvl avl){
+  return avl->dato;
+}
 
 /*
   Devuelve el subárbol izquierdo de 'avl'.
@@ -41,7 +139,9 @@ nat raizAvl(TAvl avl);
   El 'TAvl' resultado comparte memoria con el parámetro.
   El tiempo de ejecución en el peor caso es O(1).
  */
-TAvl izqAvl(TAvl avl);
+TAvl izqAvl(TAvl avl){
+  return avl->izq;
+}
 
 /*
   Devuelve el subárbol derecho de 'avl'.
@@ -49,20 +149,30 @@ TAvl izqAvl(TAvl avl);
   El 'TAvl' resultado comparte memoria con el parámetro.
   El tiempo de ejecución en el peor caso es O(1).
  */
-TAvl derAvl(TAvl avl);
+TAvl derAvl(TAvl avl){
+  return avl->der;
+}
 
 /*
   Devuelve la cantidad de elementos en 'avl'.
   El tiempo de ejecución en el peor caso es O(1).
  */
-nat cantidadEnAvl(TAvl avl);
+nat cantidadEnAvl(TAvl avl){
+  return 0;
+}
+
 
 /*
   Devuelve la altura de 'avl'.
   La altura de un árbol vacío es 0.
   El tiempo de ejecución en el peor caso es O(1).
  */
-nat alturaDeAvl(TAvl avl);
+nat alturaDeAvl(TAvl avl){
+  int alt = 0;
+  if ( avl != NULL )
+    alt = avl->altura ;
+  return alt ;
+}
 
 /*
   Devuelve un 'TIterador' de los elementos de 'avl'.
@@ -72,7 +182,9 @@ nat alturaDeAvl(TAvl avl);
   El tiempo de ejecución en el peor caso es O(n) siendo 'n' la cantidad de
   elementos de 'avl'.
  */
-TIterador enOrdenAvl(TAvl avl);
+TIterador enOrdenAvl(TAvl avl){
+  return NULL;
+}
 
 /*
   Devuelve un 'TAvl' con los 'n' elementos que están en el rango [0 .. n - 1]
@@ -86,7 +198,9 @@ TIterador enOrdenAvl(TAvl avl);
   derecho.
   El tiempo de ejecución en el peor caso es O(n).
  */
-TAvl arregloAAvl(ArregloNats elems, nat n);
+TAvl arregloAAvl(ArregloNats elems, nat n){
+  return NULL;
+}
 
 /*
   Devuelve un 'TAvl' de altura 'h' con 'n' nodos, siendo 'n' la mínima cantidad
@@ -98,7 +212,9 @@ TAvl arregloAAvl(ArregloNats elems, nat n);
   El tiempo de ejecución en el peor caso es O(n).
   Ver ejemplos en la letra.
  */
-TAvl avlMin(nat h);
+TAvl avlMin(nat h){
+  return NULL;
+}
 
 /*
   Libera la memoria asignada a 'TAvl'.
@@ -107,4 +223,6 @@ TAvl avlMin(nat h);
   El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad
   de elementos de 'avl'.
  */
-void liberarAvl(TAvl avl);
+void liberarAvl(TAvl avl){
+  
+}

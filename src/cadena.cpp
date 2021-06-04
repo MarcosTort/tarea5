@@ -320,7 +320,6 @@ bool precedeEnCadena(TLocalizador loc1, TLocalizador loc2, TCadena cad) {
 
 TLocalizador siguienteClave(nat clave, TLocalizador loc, TCadena cad) {
   assert(localizadorEnCadena(loc, cad));
-
   if(esVaciaCadena(cad)){return NULL;}
   else{
     TLocalizador rec = loc;

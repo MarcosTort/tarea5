@@ -237,7 +237,7 @@ TAvl avlaux(int start, int end, ArregloNats elems){
 
 if(start > end)
   return NULL;
-TAvl b = new _rep_avl;
+TAvl b = crearAvl();
 int elementoMedio = (start+end)/2;
 b->dato = elems[elementoMedio];
 b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;

@@ -233,36 +233,41 @@ TIterador enOrdenAvl(TAvl avl){
   derecho.
   El tiempo de ejecución en el peor caso es O(n).
  */
-TAvl avlaux(int start, int end, ArregloNats elems){
+// TAvl avlaux(int start, int end, ArregloNats elems){
 
-if(start > end)
-  return NULL;
-else{
-  TAvl b = new _rep_avl;
-  b->dato = new nat;
-  if (start == 0)
-    b->dato = NULL;
-  int elementoMedio = (start+end)/2;
-  *b->dato = elems[elementoMedio];
-  b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
-  b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
-  if(elementoMedio < end){
-    b->der = avlaux( elementoMedio + 1, end, elems);
-    b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
-    b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
-  }
-  if(start < elementoMedio){
-    b->izq = avlaux( start, elementoMedio - 1, elems);
-    b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
-    b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
-  }
-  return b;
+// if(start > end)
+//   return NULL;
+// else{
+//   TAvl b = new _rep_avl;
+//   b->dato = new nat;
+//   if (start == 0)
+//     b->dato = NULL;
+//   int elementoMedio = (start+end)/2;
+//   *b->dato = elems[elementoMedio];
+//   b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+//   b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+//   if(elementoMedio < end){
+//     b->der = avlaux( elementoMedio + 1, end, elems);
+//     b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+//     b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+//   }
+//   if(start < elementoMedio){
+//     b->izq = avlaux( start, elementoMedio - 1, elems);
+//     b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+//     b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+//   }
+//   return b;
+// }
 }
-}
-
 TAvl arregloAAvl(ArregloNats elems, nat n){
-  return avlaux(0, n-1, elems);
+  TAvl res = NULL;
+  for (nat i = 0; i < n; i++)
+  {
+    res = insertarEnAvl(elems[i], res);
+  }
+  return res;
 }
+
 
 /*
   Devuelve un 'TAvl' de altura 'h' con 'n' nodos, siendo 'n' la mínima cantidad

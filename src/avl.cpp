@@ -48,7 +48,7 @@ if(a > b) return a;
 else      return b;
 }
 void rotarDerecha( TAvl & z ) { // precond : z y z->izq != NULL
-  if(z->izq != NULL && z != NULL ){
+  //if(z->izq != NULL && z != NULL ){
     TAvl y = z->izq ;
     TAvl T3 = y->der ;
     y-> der = z ;
@@ -60,9 +60,9 @@ void rotarDerecha( TAvl & z ) { // precond : z y z->izq != NULL
     z = y ;
   }
 
-}
+//}
 void rotarIzquierda( TAvl & z ) { // precond : el z y z->der != ←-NULL
-  if(z->der != NULL && z != NULL ){
+  //if(z->der != NULL && z != NULL ){
     TAvl y = z -> der ;
     TAvl T2 = y -> izq ;
     y -> izq = z ;
@@ -73,7 +73,7 @@ void rotarIzquierda( TAvl & z ) { // precond : el z y z->der != ←-NULL
     y->cantidad = cantidadEnAvl (y->der) + cantidadEnAvl (y->izq) + 1;
     z = y ;
   }
-}
+//}
 TAvl insertarEnAvl(nat elem, TAvl avl){
   if(estaVacioAvl(avl)){
     TAvl res = NULL;

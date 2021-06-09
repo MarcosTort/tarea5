@@ -67,23 +67,21 @@ nat largoIter(TIterador i){
 TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   TIterador conjunto1 = enOrdenAvl(c1->conjunto);
   TIterador conjunto2 = enOrdenAvl(c2->conjunto);
-  // reiniciarIterador(conjunto2);
-  // printf(" primero de iterador es ");
-  // printf("%i", actualEnIterador(conjunto2));
   TIterador uni = enAlguno(conjunto1, conjunto2);
 
+  nat n = cantidadEnIterador(uni);
   uni = reiniciarIterador(uni);
   
-  nat *elems = new nat[cardinalidad(c1) + cardinalidad(c2)];
+  nat *elems = new nat[n];
   nat i;
-  for (i = 0; i < cardinalidad(c1) + cardinalidad(c2); i++){
+  for ( i = 0; i < n; i++){
     if (estaDefinidaActual(uni)){  
       elems[i] = actualEnIterador(uni);
       avanzarIterador(uni);}
   }
 
   TConjunto res = crearConjunto();
-  res->conjunto = arregloAAvl(elems, cardinalidad(c1) + cardinalidad(c2));
+  res->conjunto = arregloAAvl(elems, n);
   res->minimo = min(c1->minimo, c2->minimo);
   res->maximo = max(c1->maximo, c2->maximo);
 
@@ -93,7 +91,6 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   delete []elems;
   return res;
 }
-
 
 /*
   Devuelve un 'TConjunto' con los elementos de 'c1' que no pertenecen a 'c2'.
@@ -107,7 +104,7 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
   TIterador conjunto2 = enOrdenAvl(c2->conjunto);
   TConjunto res = crearConjunto();
   TIterador dif = soloEnA(conjunto1, conjunto2);
-  nat n = largoIter(dif);
+  nat n = cantidadEnIterador(dif);
   dif = reiniciarIterador(dif);
   nat *elems = new nat[n];
   for (nat i = 0; i < n; i++){
@@ -126,6 +123,7 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
   delete []elems;
   return res;
 }
+
 
 
 /*

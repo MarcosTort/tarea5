@@ -33,6 +33,9 @@
   'n' la del 'TConjunto' resultado.
  */
 TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
+  TConjunto c1dc2 = diferenciaDeConjuntos(c1, c2);
+  TConjunto c = diferenciaDeConjuntos(c1, c1dc2);
+  liberarConjunto(c1dc2);
   return diferenciaDeConjuntos(c1, diferenciaDeConjuntos(c1, c2));
 }
 

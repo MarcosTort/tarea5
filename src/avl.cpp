@@ -258,7 +258,6 @@ TIterador enOrdenAvl(TAvl avl){
 //   }
 //   return b;
 // }
-}
 TAvl arregloAAvl(ArregloNats elems, nat n){
   TAvl res = NULL;
   for (nat i = 0; i < n; i++)

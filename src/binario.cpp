@@ -15,6 +15,7 @@
 #include "../include/utils.h"
 #include "../include/cadena.h"
 #include "../include/binario.h"
+#include "../include/avl.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -44,7 +45,15 @@ struct _rep_binario {
   El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
   elementos de 'a'.
  */
+
 TBinario avlABinario(TAvl a){
+  if( !estaVacioAvl(a)){
+    TBinario b = new _rep_binario;
+    b->dato = crearInfo(raizAvl(a), 0);
+    b->izq = avlABinario(izqAvl(a));
+    b->der = avlABinario(derAvl(a));
+    return b;
+  }
   return NULL;
 }
 /*

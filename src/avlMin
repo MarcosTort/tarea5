@@ -1,0 +1,8 @@
+
+
+
+
+sino si altura izquierda > altura derecha
+    recursion a rama derecha
+    
+sino si altura izquierda 

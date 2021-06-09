@@ -33,7 +33,7 @@
   'n' la del 'TConjunto' resultado.
  */
 TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
-  return NULL;
+  return diferenciaDeConjuntos(c1, diferenciaDeConjuntos(c1, c2));
 }
 
 nat cantidadEnIterador(TIterador it){
@@ -70,74 +70,36 @@ TIterador enAlguno(TIterador a, TIterador b){
     reiniciarIterador(a);
     reiniciarIterador(b);
     nat alguno;
-    nat mem = 0;
-  if(estaDefinidaActual(a)&& estaDefinidaActual(b)){
-   if(actualEnIterador(a) < actualEnIterador(b)){
-        alguno = actualEnIterador(a);
-        if(mem != alguno)
-          agregarAIterador(alguno, res);
-        alguno = actualEnIterador(b);
-        if(mem != alguno)
-           agregarAIterador(alguno, res);
-        avanzarIterador(a);
-      }
-      else if(actualEnIterador(a) > actualEnIterador(b)){
-        alguno = actualEnIterador(b);
-        if(mem != alguno)
-          agregarAIterador(alguno, res);
-        avanzarIterador(b);
-      }else{
-        alguno = actualEnIterador(b);
-        if(mem != alguno)
-          agregarAIterador(alguno, res); 
-        avanzarIterador(b);
-        avanzarIterador(a);
-      }
-       mem = alguno;
-    }
     while(estaDefinidaActual(a)&& estaDefinidaActual(b)){
       if(actualEnIterador(a) < actualEnIterador(b)){
         alguno = actualEnIterador(a);
-        if(mem != alguno)
-        agregarAIterador(alguno, res);
-        alguno = actualEnIterador(b);
-        if(mem != alguno)
         agregarAIterador(alguno, res);
         avanzarIterador(a);
       }
-      else if(actualEnIterador(a) > actualEnIterador(b)){
+      else if(actualEnIterador(b) < actualEnIterador(a)){
         alguno = actualEnIterador(b);
-        if(mem != alguno)
         agregarAIterador(alguno, res);
         avanzarIterador(b);
-      }else{
+      }
+      else{
         alguno = actualEnIterador(b);
-        if(mem != alguno)
-         agregarAIterador(alguno, res); 
+        agregarAIterador(alguno, res);
         avanzarIterador(b);
         avanzarIterador(a);
       }
-      mem = alguno;
+
+    }
+    while(estaDefinidaActual(a)){
+        alguno = actualEnIterador(a);
+        agregarAIterador(alguno, res);
+        avanzarIterador(a);  
       }
-      if(estaDefinidaActual(a)){
-        while(estaDefinidaActual(a)){
-          alguno = actualEnIterador(a);
-	  if(mem!=alguno)
-          agregarAIterador(alguno, res);
-          avanzarIterador(a); 
-	  mem = alguno;  
-        }
+    while(estaDefinidaActual(b)){
+        alguno = actualEnIterador(b);
+        agregarAIterador(alguno, res);
+        avanzarIterador(b);  
       }
-      if(estaDefinidaActual(b)){
-        while(estaDefinidaActual(b)){
-          alguno = actualEnIterador(b);
-	  if(mem!=alguno)
-          agregarAIterador(alguno, res);
-          avanzarIterador(b);
-	  mem = alguno;  	
-        }
-      }
-    return res;
+  return res;
 }
 
 void imprimirIterador(TIterador it){

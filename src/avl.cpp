@@ -13,14 +13,18 @@
   El tiempo de ejecución en el peor caso es O(1).
  */
 struct _rep_avl {
-  int dato ;
-  _rep_avl * izq , * der ;
-  int altura ;
-  int cantidad;
+  nat dato ;
+  nat altura ;
+  nat cantidad;
+  TAvl izq , der ;
 };
 
 
 TAvl crearAvl(){
+  // TAvl res = new _rep_avl;
+  // res->cantidad = 0;
+  // res->altura = 0;
+  // res = res->izq = res->der = NULL;
   return NULL;
 }
 
@@ -44,61 +48,73 @@ if(a > b) return a;
 else      return b;
 }
 void rotarDerecha( TAvl & z ) { // precond : z y z->izq != NULL
-TAvl y = z -> izq ;
-TAvl T3 = y -> der ;
-y-> der = z ;
-z-> izq = T3 ;
-z-> altura = max( alturaDeAvl (z-> izq ) , alturaDeAvl (z-> der ) ) + 1;
-y-> altura = max( alturaDeAvl (y-> izq ) , alturaDeAvl (y-> der ) ) + 1;
-z = y ;
+  if(z->izq != NULL && z != NULL ){
+    TAvl y = z->izq ;
+    TAvl T3 = y->der ;
+    y-> der = z ;
+    z-> izq = T3 ;
+    z-> altura = max( alturaDeAvl (z-> izq ) , alturaDeAvl (z-> der ) ) + 1;
+    z->cantidad = cantidadEnAvl (z->der) + cantidadEnAvl (z->izq) + 1;
+    y-> altura = max( alturaDeAvl (y-> izq ) , alturaDeAvl (y-> der ) ) + 1;
+    y->cantidad =cantidadEnAvl (y->der) + cantidadEnAvl (y->izq) + 1;
+    z = y ;
+  }
+
 }
 void rotarIzquierda( TAvl & z ) { // precond : el z y z->der != ←-NULL
-TAvl y = z -> der ;
-TAvl T2 = y -> izq ;
-y -> izq = z ;
-z -> der = T2 ;
-z -> altura = max ( alturaDeAvl (z -> izq ) , alturaDeAvl (z -> der ) ) +1;
-y -> altura = max ( alturaDeAvl (y -> izq ) , alturaDeAvl (y -> der ) ) +1;
-z = y ;
+  if(z->der != NULL && z != NULL ){
+    TAvl y = z -> der ;
+    TAvl T2 = y -> izq ;
+    y -> izq = z ;
+    z -> der = T2 ;
+    z -> altura = max ( alturaDeAvl (z -> izq ) , alturaDeAvl (z -> der ) ) +1;
+    z->cantidad = cantidadEnAvl (z->der) + cantidadEnAvl (z->izq) + 1;
+    y -> altura = max ( alturaDeAvl (y -> izq ) , alturaDeAvl (y -> der ) ) +1;
+    y->cantidad = cantidadEnAvl (y->der) + cantidadEnAvl (y->izq) + 1;
+    z = y ;
+  }
 }
 TAvl insertarEnAvl(nat elem, TAvl avl){
   if(estaVacioAvl(avl)){
-    avl = new _rep_avl;
-    avl->dato = elem;
-    avl->izq = avl->der = NULL;
-    avl->altura = 1;
-    avl->cantidad++;
+    TAvl res = new _rep_avl;
+    res->dato = elem;
+    res->izq = res->der = NULL;
+    res->altura = 1;
+    res->cantidad = 1;
+    return res;
   }
   else{
     if ( elem < avl->dato){
-      avl = insertarEnAvl(elem, avl->izq);
-      avl->altura = max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(derAvl(avl)));
+      avl->izq = insertarEnAvl(elem, avl->izq);
+      avl->altura = 1 + max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(derAvl(avl)));
+      avl->cantidad = cantidadEnAvl(avl->der) + cantidadEnAvl(avl->izq) + 1;
       //factor de balance
       int FB = alturaDeAvl(izqAvl(avl))  - alturaDeAvl( derAvl(avl ));
       if(FB > 1){
-        if( alturaDeAvl(avl->izq->izq) > alturaDeAvl(avl->izq->der) )
+        if( alturaDeAvl(avl->izq->izq) > alturaDeAvl(avl->izq->der)){
           rotarDerecha(avl);
-        else{
+        }else{
           rotarIzquierda(avl->izq);
           rotarDerecha(avl);
         }
       }
     }
     else{
-      avl = insertarEnAvl(elem, derAvl(avl));
-      avl->altura = max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(izqAvl(avl)));
+      avl->der = insertarEnAvl(elem, derAvl(avl));
+      avl->altura = 1 + max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(derAvl(avl)));
+      avl->cantidad = cantidadEnAvl(avl->der) + cantidadEnAvl(avl->izq) + 1;
       int FB = alturaDeAvl(izqAvl(avl))  - alturaDeAvl( derAvl(avl ));
-      if(FB > 1){
-        if( alturaDeAvl(avl->der->der) > alturaDeAvl(avl->der->izq) )
+      if(FB < -1){
+        if( alturaDeAvl(avl->der->der) > alturaDeAvl(avl->der->izq) ){
           rotarIzquierda(avl);
-        else{
+        }else{
           rotarDerecha(avl->der);
           rotarIzquierda(avl);
         }
       }
     }
+    return avl;
   }
-  return avl;
 }
 
 /*
@@ -158,7 +174,10 @@ TAvl derAvl(TAvl avl){
   El tiempo de ejecución en el peor caso es O(1).
  */
 nat cantidadEnAvl(TAvl avl){
-  return 0;
+    if(avl == NULL)
+      return 0;
+    else
+      return avl->cantidad;
 }
 
 
@@ -182,8 +201,24 @@ nat alturaDeAvl(TAvl avl){
   El tiempo de ejecución en el peor caso es O(n) siendo 'n' la cantidad de
   elementos de 'avl'.
  */
+
+TIterador ordenAvl(TIterador it, TAvl a){
+  if(!estaVacioAvl(a)){
+    ordenAvl(it, izqAvl(a));
+    nat dato = raizAvl(a);
+    agregarAIterador(dato, it);
+    ordenAvl(it, derAvl(a));
+    return it;
+  }
+  else return NULL;
+}
 TIterador enOrdenAvl(TAvl avl){
-  return NULL;
+  if(avl != NULL)
+ { TIterador res = crearIterador();
+  res = ordenAvl(res, avl);
+  return res ;
+  }
+  else return crearIterador();
 }
 
 /*
@@ -198,8 +233,15 @@ TIterador enOrdenAvl(TAvl avl){
   derecho.
   El tiempo de ejecución en el peor caso es O(n).
  */
+
 TAvl arregloAAvl(ArregloNats elems, nat n){
-  return NULL;
+  TAvl a = NULL;
+  for (nat i = 0; i < n; i++)
+  {
+    a = insertarEnAvl(elems[i], a);
+  }
+  
+  return a;
 }
 
 /*
@@ -212,8 +254,36 @@ TAvl arregloAAvl(ArregloNats elems, nat n){
   El tiempo de ejecución en el peor caso es O(n).
   Ver ejemplos en la letra.
  */
+TAvl auxMin(nat h, nat &c){
+ TAvl res = crearAvl();
+ 
+  if(h <= 0){
+    return res;
+  }
+  else if(h == 1){
+    res = new _rep_avl;
+    res->dato = c;
+    res->izq = res->der = NULL;
+    res->altura = h;
+    res->cantidad = h;
+    c++;
+    return res;
+  }
+  else{
+    res = new _rep_avl;
+    res->izq =  auxMin(h - 1, c);
+    res->dato = c;
+    c++;
+    res->der = auxMin(h-2, c);
+    res->altura = h;
+    res->cantidad = cantidadEnAvl(res->der) + cantidadEnAvl(res->izq) + 1;
+    return res;
+  }
+  return res;
+}
 TAvl avlMin(nat h){
-  return NULL;
+  nat x = 1;
+  return auxMin(h, x);
 }
 
 /*
@@ -224,5 +294,10 @@ TAvl avlMin(nat h){
   de elementos de 'avl'.
  */
 void liberarAvl(TAvl avl){
-  
+  if(avl != NULL){
+  liberarAvl(avl->der);
+  liberarAvl(avl->izq);
+  delete avl;
+  }
+
 }

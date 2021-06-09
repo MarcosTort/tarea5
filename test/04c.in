@@ -1,0 +1,7 @@
+# Prueba de insertarEnAvl, alturaDeAvl, cantidadEnAvl, enOrdenAvl
+
+insertarEnAvl 40
+insertarEnAvl 60
+insertarEnAvl 80
+insertarEnAvl 70
+Fin

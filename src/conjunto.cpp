@@ -9,16 +9,23 @@
 #include "../include/utils.h"
 #include "../include/cadena.h"
 #include "../include/binario.h"
+#include "../include/usoTads.h"
+#include "../include/avl.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <math.h>
 struct _rep_conjunto{
-  TBinario dato;
+  TAvl conjunto;
+  nat minimo;
+  nat maximo;
 };
 TConjunto crearConjunto(){
-  return NULL;
+  TConjunto nuevo = new _rep_conjunto;
+  nuevo->conjunto = NULL;
+  nuevo->maximo = nuevo->minimo = 0;
+  return nuevo;
 }
 
 /*
@@ -26,7 +33,10 @@ TConjunto crearConjunto(){
   El tiempo de ejecución en el peor caso es O(1).
  */
 TConjunto singleton(nat elem){
-  return NULL;
+  TConjunto sing = crearConjunto();
+  sing->conjunto = insertarEnAvl(elem ,sing->conjunto); 
+  sing->maximo= sing->minimo = elem;
+  return sing;
 }
 
 
@@ -36,10 +46,52 @@ TConjunto singleton(nat elem){
   El tiempo de ejecucion en el peor caso es O(n),
   siendo  'n' la cantidad de elementos del 'TConjunto' resultado.
  */
-TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
-  return NULL;
+nat min(nat n, nat m){
+ 
+  if (n < m) return n;
+  else return m;
 }
+nat max(nat n, nat m){
+  if (n < m) return m;
+  else return n;
+}
+nat largoIter(TIterador i){
+  nat l = 0;
+  reiniciarIterador(i);
+  while (estaDefinidaActual(i)){
+    i = avanzarIterador(i);
+    l++;
+  }
+  return l;
+}
+TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
+  TIterador conjunto1 = enOrdenAvl(c1->conjunto);
+  TIterador conjunto2 = enOrdenAvl(c2->conjunto);
+  // reiniciarIterador(conjunto2);
+  // printf(" primero de iterador es ");
+  // printf("%i", actualEnIterador(conjunto2));
+  TIterador uni = enAlguno(conjunto1, conjunto2);
 
+  nat n = largoIter(uni);
+  uni = reiniciarIterador(uni);
+  
+  nat *elems = new nat[n];
+  for (nat i = 0; i < n; i++){
+    elems[i] = actualEnIterador(uni);
+    avanzarIterador(uni);
+  }
+
+  TConjunto res = crearConjunto();
+  res->conjunto = arregloAAvl(elems, n);
+  res->minimo = min(c1->minimo, c2->minimo);
+  res->maximo = max(c1->maximo, c2->maximo);
+
+  liberarIterador(conjunto2);
+  liberarIterador(conjunto1);
+  liberarIterador(uni);
+  delete []elems;
+  return res;
+}
 
 /*
   Devuelve un 'TConjunto' con los elementos de 'c1' que no pertenecen a 'c2'.
@@ -49,7 +101,28 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   'n' la del 'TConjunto' resultado.
  */
 TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
-  return NULL;
+  TIterador conjunto1 = enOrdenAvl(c1->conjunto);
+  TIterador conjunto2 = enOrdenAvl(c2->conjunto);
+  TConjunto res = crearConjunto();
+  TIterador dif = soloEnA(conjunto1, conjunto2);
+  nat n = largoIter(dif);
+  dif = reiniciarIterador(dif);
+  nat *elems = new nat[n];
+  for (nat i = 0; i < n; i++){
+    
+    elems[i] = actualEnIterador(dif);
+    if(i == 0) res->minimo = elems[i];
+    if (i == n - 1) res->maximo = elems[i];
+    avanzarIterador(dif);
+
+  }
+  res->conjunto = arregloAAvl(elems, n);
+  
+  liberarIterador(conjunto2);
+  liberarIterador(conjunto1);
+  liberarIterador(dif);
+  delete []elems;
+  return res;
 }
 
 
@@ -59,7 +132,8 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
   elementos de 'c'.
  */
 bool perteneceAConjunto(nat elem, TConjunto c){
-  return true;
+
+  return !estaVacioAvl(buscarEnAvl(elem, c->conjunto));
 }
 
 
@@ -68,7 +142,7 @@ bool perteneceAConjunto(nat elem, TConjunto c){
   El tiempo de ejecución en el peor caso es O(1).
  */
 bool estaVacioConjunto(TConjunto c){
-  return true;
+  return c->conjunto == NULL;
 }
 
 
@@ -77,7 +151,7 @@ bool estaVacioConjunto(TConjunto c){
   El tiempo de ejecución en el peor caso es O(1).
  */
 nat cardinalidad(TConjunto c){
-  return 0;
+  return cantidadEnAvl(c->conjunto);
 }
 
 
@@ -87,7 +161,7 @@ nat cardinalidad(TConjunto c){
   El tiempo de ejecución en el peor caso es O(1).
  */
 nat minimo(TConjunto c){
-  return 0;
+  return c->minimo;
 }
 
 
@@ -97,7 +171,7 @@ nat minimo(TConjunto c){
   El tiempo de ejecución en el peor caso es O(1).
  */
 nat maximo(TConjunto c){
-  return 0;
+  return c->maximo;
 }
 
 
@@ -111,7 +185,11 @@ nat maximo(TConjunto c){
   El tiempo de ejecución en el peor caso es O(n).
  */
 TConjunto arregloAConjunto(ArregloNats elems, nat n){
-  return NULL;
+  TConjunto res = crearConjunto();
+  res->conjunto = arregloAAvl(elems, n);
+  res->minimo = elems[0];
+  res->maximo = elems[n - 1];
+  return res;
 }
 
 
@@ -124,7 +202,8 @@ TConjunto arregloAConjunto(ArregloNats elems, nat n){
   elementos de 'c'.
  */
 TIterador iteradorDeConjunto(TConjunto c){
-  return NULL;
+  TIterador it = enOrdenAvl(c->conjunto);
+  return it;
 }
 
 
@@ -134,6 +213,7 @@ TIterador iteradorDeConjunto(TConjunto c){
   elementos de 'c'.
  */
 void liberarConjunto(TConjunto c){
-  
+  liberarAvl(c->conjunto);
+  delete c;
 }
 

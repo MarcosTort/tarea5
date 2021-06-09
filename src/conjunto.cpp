@@ -68,29 +68,35 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   TIterador conjunto1 = enOrdenAvl(c1->conjunto);
   TIterador conjunto2 = enOrdenAvl(c2->conjunto);
   TIterador uni = enAlguno(conjunto1, conjunto2);
+  if(cantidadEnIterador(uni) != 0){
+    nat n = cantidadEnIterador(uni);
+    uni = reiniciarIterador(uni);
+    
+    nat *elems = new nat[n];
+    nat i = 0;
+    while(estaDefinidaActual(uni)){
+        
+        elems[i] = actualEnIterador(uni);
+        avanzarIterador(uni);
+        i++;
+    }
 
-  nat n = cantidadEnIterador(uni);
-  uni = reiniciarIterador(uni);
-  
-  nat *elems = new nat[n];
-  nat i = 0;
-  while(estaDefinidaActual(uni)){
-      
-      elems[i] = actualEnIterador(uni);
-      avanzarIterador(uni);
-      i++;
-  }
+    TConjunto res = new _rep_conjunto;
+    res->conjunto = arregloAAvl(elems, n);
+    res->minimo = min(c1->minimo, c2->minimo);
+    res->maximo = max(c1->maximo, c2->maximo);
 
-  TConjunto res = crearConjunto();
-  res->conjunto = arregloAAvl(elems, n);
-  res->minimo = min(c1->minimo, c2->minimo);
-  res->maximo = max(c1->maximo, c2->maximo);
-
-  liberarIterador(conjunto2);
-  liberarIterador(conjunto1);
-  liberarIterador(uni);
-  delete []elems;
-  return res;
+    liberarIterador(conjunto2);
+    liberarIterador(conjunto1);
+    liberarIterador(uni);
+    delete []elems;
+    return res;}
+    else{
+      liberarIterador(conjunto2);
+    liberarIterador(conjunto1);
+    liberarIterador(uni);
+    return crearConjunto();
+    }
 }
 
 /*

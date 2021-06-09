@@ -174,7 +174,7 @@ TAvl derAvl(TAvl avl){
   El tiempo de ejecución en el peor caso es O(1).
  */
 nat cantidadEnAvl(TAvl avl){
-    if(avl == NULL)
+    if(estaVacioAvl(avl))
       return 0;
     else
       return avl->cantidad;
@@ -188,7 +188,7 @@ nat cantidadEnAvl(TAvl avl){
  */
 nat alturaDeAvl(TAvl avl){
   int alt = 0;
-  if ( avl != NULL )
+  if ( !estaVacioAvl(avl) )
     alt = avl->altura ;
   return alt ;
 }
@@ -242,9 +242,16 @@ int elementoMedio = (start+end)/2;
 b->dato = elems[elementoMedio];
 b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
 b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
-b->der = avlaux( elementoMedio + 1, end, elems);
-b->izq = avlaux( start, elementoMedio - 1, elems);
-b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+if(elementoMedio < end){
+  b->der = avlaux( elementoMedio + 1, end, elems);
+  b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+  b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+}
+if(start < elementoMedio){
+  b->izq = avlaux( start, elementoMedio - 1, elems);
+  b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+  b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+}
 
   
 return b;

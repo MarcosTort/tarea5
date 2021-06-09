@@ -106,6 +106,7 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
   TIterador dif = soloEnA(conjunto1, conjunto2);
   nat n = cantidadEnIterador(dif);
   dif = reiniciarIterador(dif);
+  
   nat *elems = new nat[n];
   for (nat i = 0; i < n; i++){
     
@@ -123,7 +124,6 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
   delete []elems;
   return res;
 }
-
 
 
 /*

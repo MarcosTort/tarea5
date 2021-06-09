@@ -75,7 +75,6 @@ return b;
 }
 TBinario binarioBalanceado(ArregloNats elems, nat n){
   return balanceado(0, n-1, elems);
-
 }
 
 

@@ -97,26 +97,11 @@ TIterador enAlguno(TIterador a, TIterador b){
     while(estaDefinidaActual(b)){
         alguno = actualEnIterador(b);
         agregarAIterador(alguno, res);
-        avanzarIterador(b);  
+        avanzarIterador(a);  
       }
   return res;
 }
 
-void imprimirIterador(TIterador it){
-    printf("\n");
-    printf("##################");
-    printf("\n");
-    printf("(");
-  while(estaDefinidaActual(it)){
-    
-    printf("%i" "%s", actualEnIterador(it), ", ");
-    avanzarIterador(it);
-  }
-    printf(")");
-    printf("\n");
-    printf("##################");
-    printf("\n");
-}
 
 // nueva
 /*

@@ -118,10 +118,13 @@ TColCadenas removerDeColCadenas(nat dato, nat pos, TColCadenas col){
  */
 void liberarColCadenas(TColCadenas col){
   nat i = 0;
-  while(col->tope > 0){
+  nat cont = 0;
+  while(cont<col->cota){
     liberarCadena(col->arr[i]);
-    col->tope--;
+    cont++;
     i++;
+
   }
+  delete[]col->arr;
   delete col;
 }

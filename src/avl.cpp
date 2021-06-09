@@ -233,15 +233,25 @@ TIterador enOrdenAvl(TAvl avl){
   derecho.
   El tiempo de ejecución en el peor caso es O(n).
  */
+TAvl avlaux(int start, int end, ArregloNats elems){
+
+if(start > end)
+  return NULL;
+TAvl b = new _rep_avl;
+int elementoMedio = (start+end)/2;
+b->dato = elems[elementoMedio];
+b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+b->der = avlaux( elementoMedio + 1, end, elems);
+b->izq = avlaux( start, elementoMedio - 1, elems);
+b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+
+  
+return b;
+}
 
 TAvl arregloAAvl(ArregloNats elems, nat n){
-  TAvl a = NULL;
-  for (nat i = 0; i < n; i++)
-  {
-    a = insertarEnAvl(elems[i], a);
-  }
-  
-  return a;
+  return avlaux(0, n-1, elems);
 }
 
 /*

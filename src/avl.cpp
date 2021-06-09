@@ -13,7 +13,7 @@
   El tiempo de ejecución en el peor caso es O(1).
  */
 struct _rep_avl {
-  nat *dato ;
+  nat dato ;
   nat altura ;
   nat cantidad;
   TAvl izq , der ;
@@ -77,14 +77,14 @@ void rotarIzquierda( TAvl & z ) { // precond : el z y z->der != ←-NULL
 TAvl insertarEnAvl(nat elem, TAvl avl){
   if(estaVacioAvl(avl)){
     TAvl res = new _rep_avl;
-    *res->dato = elem;
+    res->dato = elem;
     res->izq = res->der = NULL;
     res->altura = 1;
     res->cantidad = 1;
     return res;
   }
   else{
-    if ( elem < *avl->dato){
+    if ( elem < avl->dato){
       avl->izq = insertarEnAvl(elem, avl->izq);
       avl->altura = 1 + max(alturaDeAvl(izqAvl(avl)), alturaDeAvl(derAvl(avl)));
       avl->cantidad = cantidadEnAvl(avl->der) + cantidadEnAvl(avl->izq) + 1;
@@ -126,13 +126,13 @@ TAvl insertarEnAvl(nat elem, TAvl avl){
  */
 TAvl buscarEnAvl(nat elem, TAvl avl){
   if(!estaVacioAvl(avl)){
-    if(elem == *avl->dato){
+    if(elem == avl->dato){
       return avl;
     }
-    else if(elem<*avl->dato){
+    else if(elem<avl->dato){
       return buscarEnAvl(elem, izqAvl(avl));
     }
-    else if(elem>*avl->dato){
+    else if(elem>avl->dato){
       return buscarEnAvl(elem, derAvl(avl));
     }
     else return NULL;
@@ -146,7 +146,7 @@ TAvl buscarEnAvl(nat elem, TAvl avl){
   El tiempo de ejecución en el peor caso es O(1).
  */
 nat raizAvl(TAvl avl){
-  return *avl->dato;
+  return avl->dato;
 }
 
 /*
@@ -237,11 +237,9 @@ TIterador enOrdenAvl(TAvl avl){
 
 // if(start > end)
 //   return NULL;
-// else{
-//   TAvl b = new _rep_avl;
-//   b->dato = new nat;
-//   if (start == 0)
-//     b->dato = NULL;
+//   else
+// {  TAvl b = new _rep_avl;
+//   b->dato = NULL;
 //   int elementoMedio = (start+end)/2;
 //   *b->dato = elems[elementoMedio];
 //   b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
@@ -256,8 +254,9 @@ TIterador enOrdenAvl(TAvl avl){
 //     b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
 //     b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
 //   }
-//   return b;
+//   return b;}
 // }
+
 TAvl arregloAAvl(ArregloNats elems, nat n){
   TAvl res = NULL;
   for (nat i = 0; i < n; i++)
@@ -266,7 +265,6 @@ TAvl arregloAAvl(ArregloNats elems, nat n){
   }
   return res;
 }
-
 
 /*
   Devuelve un 'TAvl' de altura 'h' con 'n' nodos, siendo 'n' la mínima cantidad
@@ -286,7 +284,7 @@ TAvl auxMin(nat h, nat &c){
   }
   else if(h == 1){
     res = new _rep_avl;
-    *res->dato = c;
+    res->dato = c;
     res->izq = res->der = NULL;
     res->altura = h;
     res->cantidad = h;
@@ -296,7 +294,7 @@ TAvl auxMin(nat h, nat &c){
   else{
     res = new _rep_avl;
     res->izq =  auxMin(h - 1, c);
-    *res->dato = c;
+    res->dato = c;
     c++;
     res->der = auxMin(h-2, c);
     res->altura = h;

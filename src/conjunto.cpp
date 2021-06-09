@@ -72,17 +72,18 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   // printf("%i", actualEnIterador(conjunto2));
   TIterador uni = enAlguno(conjunto1, conjunto2);
 
-  nat n = largoIter(uni);
   uni = reiniciarIterador(uni);
   
-  nat *elems = new nat[n];
-  for (nat i = 0; i < n; i++){
-    elems[i] = actualEnIterador(uni);
-    avanzarIterador(uni);
+  nat *elems = new nat[cardinalidad(c1) + cardinalidad(c2)];
+  nat i;
+  for (i = 0; i < cardinalidad(c1) + cardinalidad(c2); i++){
+    if (estaDefinidaActual(uni)){  
+      elems[i] = actualEnIterador(uni);
+      avanzarIterador(uni);}
   }
 
   TConjunto res = crearConjunto();
-  res->conjunto = arregloAAvl(elems, n);
+  res->conjunto = arregloAAvl(elems, cardinalidad(c1) + cardinalidad(c2));
   res->minimo = min(c1->minimo, c2->minimo);
   res->maximo = max(c1->maximo, c2->maximo);
 
@@ -92,6 +93,7 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   delete []elems;
   return res;
 }
+
 
 /*
   Devuelve un 'TConjunto' con los elementos de 'c1' que no pertenecen a 'c2'.

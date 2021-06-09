@@ -47,10 +47,10 @@ LD = g++ # gcc
 
 # opciones de compilación
 # para que los assert tengan efecto 
-CCFLAGS = -Wall -Werror -I$(HDIR) -g
+#CCFLAGS = -Wall -Werror -I$(HDIR) -g
 
 # para que los assert NO tengan efecto y no impacten en el tiempo de ejecución
-#CCFLAGS = -Wall -Werror -I$(HDIR) -g -DNDEBUG
+CCFLAGS = -Wall -Werror -I$(HDIR) -g -DNDEBUG
 
 
 
@@ -159,6 +159,19 @@ t-t-%:$(TESTDIR)/t-%.in $(TESTDIR)/t-%.out
 
 
 
+# Test general. Las dependencias son los .diff.
+# Con `find` se encuentran los .diff de tamaño > 0 que están en el directorio
+# $(TESTDIR) y lo asigna a $(LST_ERR).
+# Si el tamaño de $(LST_ERR) no es cero imprime los casos con error.
+# Con `sed` se elimina el nombre de directorio y la extensión.
+testing:all $(DIFFS)
+	@LST_ERR=$$(find $(TESTDIR) -name *.diff* -size +0c -print);             \
+	if [ -n "$${LST_ERR}" ];                                                \
+	then                                                                    \
+		echo -- CASOS CON ERRORES --;                                   \
+		echo "$${LST_ERR}" | sed -e 's/$(TESTDIR)\///g' -e 's/.diff//g';\
+	fi
+
 # Genera el entregable.
 ENTREGA=Entrega5.tar.gz
 CPPS_ENTREGA = cadena.cpp binario.cpp iterador.cpp pila.cpp colaBinarios.cpp avl.cpp conjunto.cpp colCadenas.cpp usoTads.cpp
@@ -172,7 +185,7 @@ entrega:
 
 # borra binarios
 clean_bin:
-	@rm -f $(EJECUTABLE) $(ODIR)/$(PRINCIPAL).o $(OS) $(LIB)
+	@rm -f $(EJECUTABLE) $(ODIR)/$(PRINCIPAL).o $(OS)
 
 # borra resultados de ejecución y comparación
 clean_test:
@@ -181,6 +194,7 @@ clean_test:
 # borra binarios, resultados de ejecución y comparación, y copias de respaldo
 clean:clean_test clean_bin
 	@rm -f *~ $(HDIR)/*~ $(CPPDIR)/*~ $(TESTDIR)/*~
+
 
 
 

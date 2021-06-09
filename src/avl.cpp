@@ -238,6 +238,7 @@ TAvl avlaux(int start, int end, ArregloNats elems){
 if(start > end)
   return NULL;
 TAvl b = new _rep_avl;
+b->dato = new nat;
 b->dato = NULL;
 int elementoMedio = (start+end)/2;
 *b->dato = elems[elementoMedio];

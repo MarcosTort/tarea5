@@ -237,27 +237,27 @@ TAvl avlaux(int start, int end, ArregloNats elems){
 
 if(start > end)
   return NULL;
-TAvl b = new _rep_avl;
-b->dato = new nat;
-if (start == 0)
-  b->dato = NULL;
-int elementoMedio = (start+end)/2;
-*b->dato = elems[elementoMedio];
-b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
-b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
-if(elementoMedio < end){
-  b->der = avlaux( elementoMedio + 1, end, elems);
+else{
+  TAvl b = new _rep_avl;
+  b->dato = new nat;
+  if (start == 0)
+    b->dato = NULL;
+  int elementoMedio = (start+end)/2;
+  *b->dato = elems[elementoMedio];
   b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
   b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+  if(elementoMedio < end){
+    b->der = avlaux( elementoMedio + 1, end, elems);
+    b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+    b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+  }
+  if(start < elementoMedio){
+    b->izq = avlaux( start, elementoMedio - 1, elems);
+    b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
+    b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
+  }
+  return b;
 }
-if(start < elementoMedio){
-  b->izq = avlaux( start, elementoMedio - 1, elems);
-  b->cantidad = cantidadEnAvl(b->izq) + cantidadEnAvl(b->der) + 1;
-  b->altura = max(alturaDeAvl(b->der), alturaDeAvl(b->izq)) + 1;
-}
-
-  
-return b;
 }
 
 TAvl arregloAAvl(ArregloNats elems, nat n){

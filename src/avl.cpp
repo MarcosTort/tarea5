@@ -76,7 +76,7 @@ void rotarIzquierda( TAvl & z ) { // precond : el z y z->der != ←-NULL
 }
 TAvl insertarEnAvl(nat elem, TAvl avl){
   if(estaVacioAvl(avl)){
-    TAvl res = new NULL;
+    TAvl res = NULL;
     res->dato = elem;
     res->izq = res->der = NULL;
     res->altura = 1;

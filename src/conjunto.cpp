@@ -73,11 +73,12 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
   uni = reiniciarIterador(uni);
   
   nat *elems = new nat[n];
-  nat i;
-  for ( i = 0; i < n; i++){
-    if (estaDefinidaActual(uni)){  
+  nat i = 0;
+  while(estaDefinidaActual(uni)){
+      
       elems[i] = actualEnIterador(uni);
-      avanzarIterador(uni);}
+      avanzarIterador(uni);
+      i++;
   }
 
   TConjunto res = crearConjunto();
